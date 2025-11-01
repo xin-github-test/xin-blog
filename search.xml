@@ -24,20 +24,6 @@
       </tags>
   </entry>
   <entry>
-    <title>个人简介</title>
-    <url>/2025/01/03/%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<p><img src="/assert/profile.jpg"><br>作者很懒，什么都没有留下…</p>
-<span id="more"></span>
-
-]]></content>
-      <categories>
-        <category>profile</category>
-      </categories>
-      <tags>
-        <tag>个人简介</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>vue2 学习笔记</title>
     <url>/2025/01/03/vue2-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
@@ -58,6 +44,20 @@
       <tags>
         <tag>encrypt</tag>
         <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个人简介</title>
+    <url>/2025/01/03/%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<p><img src="/assert/profile.jpg"><br>作者很懒，什么都没有留下…</p>
+<span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>profile</category>
+      </categories>
+      <tags>
+        <tag>个人简介</tag>
       </tags>
   </entry>
   <entry>
