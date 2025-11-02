@@ -2623,6 +2623,9 @@ figure.highlight pre .javascript .function {
   position: relative;
   overflow: hidden;
   margin-bottom: 20px;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
   display: inline-block;
   width: calc(100% / 2 - 8px);
   vertical-align: top;
@@ -3376,6 +3379,9 @@ figure.highlight pre .javascript .function {
 }
 #aside-content {
   width: 26%;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
 }
 @media screen and (min-width: 900px) {
   #aside-content {
