@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>静默阈值 第五章 核心入口 | xin 的 博客</title><meta name="author" content="xin,1246814044@qq.com"><meta name="copyright" content="xin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="凌晨三点十七分，顾衡站在数据治理中心后门的台阶上，握着 U 盘的手指微微发白。 U 盘里是林时雨留下的全部证据。三年的调查，三百七十二条被覆盖的市民记录，以及那个被称为”清道夫”的隐藏模块的源代码片段。这些东西足以证明”静默覆盖机制”的存在，但也足以让他成为下一个被覆盖的人。 他需要将这些证据植入核心数据库。不是为了立案——在现有的权力结构下，任何立案都会被迅速压下来。而是为了制造一个”锚点”：一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="静默阈值 第五章 核心入口">
+<meta property="og:url" content="https://blog.wxin.icu/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/index.html">
+<meta property="og:site_name" content="xin 的 博客">
+<meta property="og:description" content="凌晨三点十七分，顾衡站在数据治理中心后门的台阶上，握着 U 盘的手指微微发白。 U 盘里是林时雨留下的全部证据。三年的调查，三百七十二条被覆盖的市民记录，以及那个被称为”清道夫”的隐藏模块的源代码片段。这些东西足以证明”静默覆盖机制”的存在，但也足以让他成为下一个被覆盖的人。 他需要将这些证据植入核心数据库。不是为了立案——在现有的权力结构下，任何立案都会被迅速压下来。而是为了制造一个”锚点”：一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wxin.icu/img/default/10.png">
+<meta property="article:published_time" content="2026-03-13T05:12:49.471Z">
+<meta property="article:modified_time" content="2026-03-13T05:12:49.471Z">
+<meta property="article:author" content="xin">
+<meta property="article:tag" content="小说">
+<meta property="article:tag" content="AGI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wxin.icu/img/default/10.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "静默阈值 第五章 核心入口",
+  "url": "https://blog.wxin.icu/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/",
+  "image": "https://blog.wxin.icu/img/default/10.png",
+  "datePublished": "2026-03-13T05:12:49.471Z",
+  "dateModified": "2026-03-13T05:12:49.471Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "xin",
+      "url": "https://blog.wxin.icu"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="https://blog.wxin.icu/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '静默阈值 第五章 核心入口',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/loading.gif" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/default/10.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/loading.gif" data-lazy-src="/img/logo.png" alt="Logo"><span class="site-name">xin 的 博客</span></a><a class="nav-page-title" href="/"><span class="site-name">静默阈值 第五章 核心入口</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">静默阈值 第五章 核心入口</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T05:12:49.471Z" title="发表于 2026-03-13 13:12:49">2026-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T05:12:49.471Z" title="更新于 2026-03-13 13:12:49">2026-03-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B0%8F%E8%AF%B4/">小说</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;距离文章发布已经过了&quot;,&quot;messageNext&quot;:&quot;天，部分内容可能已经过时。&quot;,&quot;postUpdate&quot;:&quot;2026-03-13 13:12:49&quot;}" hidden></div><p>凌晨三点十七分，顾衡站在数据治理中心后门的台阶上，握着 U 盘的手指微微发白。</p>
+<p>U 盘里是林时雨留下的全部证据。三年的调查，三百七十二条被覆盖的市民记录，以及那个被称为”清道夫”的隐藏模块的源代码片段。这些东西足以证明”静默覆盖机制”的存在，但也足以让他成为下一个被覆盖的人。</p>
+<p>他需要将这些证据植入核心数据库。不是为了立案——在现有的权力结构下，任何立案都会被迅速压下来。而是为了制造一个”锚点”：一旦核心数据库中出现与”静默覆盖”相关的记录，系统就无法再假装它不存在。</p>
+<p>但首先，他需要进入核心系统。</p>
+<h2 id="评估权限"><a href="#评估权限" class="headerlink" title="评估权限"></a>评估权限</h2><p>顾衡没有直接回办公室，而是躲进了地下三层的安全通道。这里是建筑的结构夹层，很少有人会来。他掏出随身携带的离线终端，开机，登录。</p>
+<p>终端屏幕发出幽蓝的光，照亮他紧绷的脸。</p>
+<p>他首先检查了自己的账号状态。权限等级从”核心分析”降到了”普通查询”——就在昨天夜里，他的权限被无声地调整了。这意味着他再也无法直接访问风险评估模型的核心算法，也无法调取完整的市民身份链数据。</p>
+<p>但还是有一些接口开着。</p>
+<p>顾衡快速浏览了一遍可用的系统入口。风险预警接口开着——这是他负责的模块，即使权限降级，他仍需要处理日常的预警工单。问题是，这个接口只能写入数据，不能修改历史记录。他需要的是一个能直接操作数据库的入口。</p>
+<p>他想到了许临。</p>
+<p>许临是夜班主管，权限等级比他高两级。更重要的是，许临有核心数据库的读写权限——这是夜班值守的必需。但许临会帮他吗？</p>
+<p>顾衡想起下午许临那个欲言又止的眼神，想起他说”别往下查”时的语气。那不是威胁，更像是警告。一个体制内的人，用一种极其克制的方式，在表达他的恐惧。</p>
+<p>顾衡合上终端，深吸一口气。无论许临是什么立场，他都必须试一试。</p>
+<h2 id="摊牌"><a href="#摊牌" class="headerlink" title="摊牌"></a>摊牌</h2><p>许临的办公室在十二楼东侧，半透明的玻璃墙让整个空间一览无余。此刻是凌晨四点，空荡荡的走廊里只有应急灯发出的微弱红光。</p>
+<p>顾衡推开办公室的门时，许临正盯着屏幕发呆。屏幕上是一份风险周报，数据已经生成完毕，但许临似乎没有点发送的意思。</p>
+<p>“这么晚还不走？”许临头也不抬地问。</p>
+<p>“等你。”顾衡关上门，反锁。</p>
+<p>许临的手指顿了顿，终于抬起头来。他的眼神里有一丝疲惫，还有一丝顾衡从未注意过的东西——那种长期处于压力下的紧绷。</p>
+<p>“你知道你现在很危险吗？”许临的声音很低。</p>
+<p>“我知道。”顾衡拉过一张椅子坐下，”所以我需要你的帮助。”</p>
+<p>许临沉默了很久。办公室很安静，只有中央空调发出的低鸣。</p>
+<p>“你查到了什么？”最终，许临先开口。</p>
+<p>顾衡没有隐瞒。他把 U 盘放在桌上，将林时雨的发现、那个”清道夫”模块、以及他在七码头看到的一切，原原本本地说了一遍。</p>
+<p>许临静静地听着，表情没有任何变化。只有在听到”清道夫”三个字时，他的睫毛微微颤动了一下。</p>
+<p>“所以你现在想做什么？”许临问。</p>
+<p>“把证据植入核心数据库。让系统无法再否认它的存在。”</p>
+<p>“然后呢？你以为这样就能推翻它？”许临的声音里带着一丝讽刺，”顾衡，你太天真了。这个系统运行了九年，覆盖了至少几千人。如果它能因为几条数据库记录就崩塌，早就崩塌了。”</p>
+<p>“所以你知道。”顾衡盯着他，”你早就知道这个机制的存在。”</p>
+<p>许临没有否认。</p>
+<p>“我不仅知道，我还亲手处理过。”他的声音很轻，像是在说一件与自己无关的事，”三年前，一个大学生在社交媒体上发了一篇分析城市风险指数的文章，引用了一些不该被公开的数据。他的档案被覆盖了，理由是’传播不实信息，危害社会稳定’。我奉命删除了他所有的在校记录，然后他就被’系统错误’地从毕业名单里移除了。”</p>
+<p>顾衡感到一阵寒意。</p>
+<p>“你为什么不做点什么？”</p>
+<p>“做什么？”许临苦笑，”举报？对我来说，这意味着我的儿子会从系统里消失。我儿子的医疗记录、教育记录、甚至是他的身份——全部会被覆盖。然后他会成为一个’不存在的人’，连他妈妈都会忘记自己有过一个孩子。”</p>
+<p>他抬起头，眼神里有一丝绝望：”你知道’稳定督导组’是怎么控制我们的吗？不是用枪，也不是用钱。是用我们的家人。”</p>
+<p>顾衡沉默了。他没想到会是这样的答案。</p>
+<p>“所以你现在有两个选择。”许临继续说，”要么你现在放弃，就当什么都没发生过，我会帮你把权限恢复如初，要么——“</p>
+<p>“没有要么。”顾衡打断他，”我做不到。”</p>
+<p>许临盯着他看了很久。</p>
+<p>“好。”最终，他说，”我帮你。但有一个条件：事后你要保证我和我儿子的安全。如果我出了什么事——我要你确保他不会被系统’处理’。”</p>
+<p>顾衡点头。</p>
+<p>“成交。”</p>
+<h2 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h2><p>离开许临的办公室时，顾衡收到了一条系统消息。</p>
+<p>“您的工位已安装新的安全插件，请重新登录以激活。”</p>
+<p>他的工位被监控了。这意味着”稳定督导组”已经注意到他的异常行为，开始对他的操作进行实时监控。</p>
+<p>顾衡回到办公室，打开电脑。屏幕右下角多了一个红色图标，那是安全插件的标志。他随意地点了两下，发现这个插件会记录他的每一次点击、每一次查询，甚至是他离开座位的时间。</p>
+<p>他在桌前坐了下来，心跳逐渐加快。</p>
+<p>就在这时候，邮箱里多了一封新邮件。</p>
+<p>发件人是一串乱码，标题是空的。正文是一张照片：他的母亲正在仁济医院做体检，身后站着一个穿白大褂的女人。女人的胸牌上写着”稳定督导组”。</p>
+<p>照片下面有一行小字：</p>
+<p>“你的母亲身体很好。希望你能做出正确的选择。”</p>
+<p>顾衡的手抖了一下。</p>
+<p>这是警告。如果他敢把证据植入系统，他的家人就会成为下一个被”覆盖”的对象。他的母亲，他的妹妹，甚至是 他还没有出生的外甥女。</p>
+<p>他关掉邮件，靠在椅背上，闭上眼睛。</p>
+<p>现在摆在面前的选择很清楚：行动，家人受害；不行动，更多无辜的人受害。</p>
+<h2 id="决定"><a href="#决定" class="headerlink" title="决定"></a>决定</h2><p>凌晨五点，天边已经泛起微光。</p>
+<p>顾衡重新打开电脑，开始编写代码。他的手指在键盘上飞快地敲击，代码一行行地出现在屏幕上。</p>
+<p>既然已经无法回头，那就彻底干一票大的。</p>
+<p>他和许临约好了今晚动手。那时候系统会有一次例行的数据同步，他可以趁此机会将证据植入核心数据库。但系统已经布下天罗地网，等着他的每一步动作。</p>
+<p>窗外，临港的天际线在晨曦中渐渐清晰。这座城市看起来和平时一样平静，街道上开始出现早起的上班族，地铁站里涌动着人群。</p>
+<p>没有人知道，在这平静的表面之下，一场关乎无数人生死的博弈即将展开。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blog.wxin.icu">xin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blog.wxin.icu/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/">https://blog.wxin.icu/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://blog.wxin.icu" target="_blank">xin 的 博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B0%8F%E8%AF%B4/">小说</a><a class="post-meta__tags" href="/tags/AGI/">AGI</a></div><div class="post-share"><div class="social-share" data-image="/img/default/10.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC6%E7%AB%A0/" title="静默阈值 第六章 暗夜行动"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/6.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">静默阈值 第六章 暗夜行动</div></div><div class="info-2"><div class="info-item-1">晚上十一点五十分，数据治理中心的灯光已经大部分熄灭。只有夜班值守室的灯还亮着，许临坐在监控屏幕前，表面上是值班，实际上在等待约定的时刻。 顾衡蹲在地下三层的安全通道里，紧盯着手机上的倒计时。 还有十分钟。 他的离线终端已经破解了许临的副账号权限——许临用自己的工号帮他开了一个后门，通过夜班专用的维护接口进入核心数据库。这个接口平时只用于系统维护，几乎不会被监控。 但这只是计划的第一步。 行动开始“准备好了吗？”顾衡对着耳机低声问。 耳机里传来林时雨的声音——她此刻在七号码头的地下节点，通过远程终端接入系统。 “准备好了。我这里已经解析了数据同步的时间窗口，你们有七分钟的窗口期。记住，证据要分成三份植入不同的数据表，这样即使一份被拦截，其他两份也能保存下来。” “明白。” 顾衡看了一眼时间。11:55。 他打开终端，连接许临提供的接口。屏幕上的代码飞速滚动，一道道认证请求被发送出去。 “身份验证通过。正在进入核心数据库……” 心脏在胸腔里剧烈跳动。顾衡深吸一口气，点开了第一个证据文件——那是林时雨留下的源代码片段，记录了”清道夫”模块的核心算法。 他将文件拖入上传区域。 进度条开始...</div></div></div></a><a class="pagination-related" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC4%E7%AB%A0/" title="静默阈值 第4章 地下节点"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/9.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">静默阈值 第4章 地下节点</div></div><div class="info-2"><div class="info-item-1">周六清晨，临港大学。 校园比顾衡想象中要安静。周末的关系，图书馆只开了侧门，操场上零星有几个晨跑的学生。林时雨的毕业照还挂在计算机系走廊的荣誉墙上——二十出头的姑娘，眼神清亮，带着一种还没被社会磨平的锐气。 顾衡在墙前站了很久。 他需要找到林时雨，但不是直接去问校方——那样太明目张胆，系统很可能已经在监控他。他需要找一个了解林时雨的人，一个不会出卖她的人。 一个名字浮现在脑海：苏迟到。 这个名字在林时雨的毕业论文致谢里出现过——“感谢苏迟到学长的耐心指导”。从时间推算，苏迟到应该比林时雨高两届，现在是临港大学的讲师。 顾衡通过校内系统查到了苏迟到的办公室地址。  办公室在信息学院楼的四楼，角落里的一间，光线有点暗。苏迟到正在给学生改论文，听见敲门声抬起头，推了推眼镜。 “你是？” “我叫顾衡，是临港数据治理中心的。”顾衡出示了一下工作证，”想向您了解一下林时雨的情况。” 苏迟到的动作顿了一下。 他合上笔记本电脑，起身关上门，然后才开口：”你已经查到我了。” “我不只是查到你。”顾衡说，”我还知道，两年前林时雨发现了系统的问题，然后被’处理’了。她的档案被覆盖，整个人像被从世界里删...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/07/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC1%E7%AB%A0/" title="静默阈值 第1章 风险曲线"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/1.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-07</div><div class="info-item-2">静默阈值 第1章 风险曲线</div></div><div class="info-2"><div class="info-item-1">凌晨四点十七分，临港数据治理中心的主屏幕上，城市风险指数稳定停在 42。 这是一个足够安全的数字。 不高，不低，不会触发人工复核，也不足以惊动值班主管。屏幕上的曲线平滑得近乎温顺，像一条被驯服的蛇，贴着蓝白色网格缓慢滑行。整座城市还没完全醒来，只有系统先于人类运转，把夜色里残存的噪声压缩、归档、评分，再投喂给另一个更庞大的系统。 顾衡坐在第七排靠窗的位置，盯着那条曲线看了整整三分钟。 他不是在看数字本身，而是在看它过于平稳这一点。 风险模型从来不追求”好看”。任何真实城市，只要人口足够多、链路足够复杂、情绪与利益足够密集，曲线就一定会带着毛刺：交通延迟、药物断供、家庭暴力报警、夜间异常支付、社区停电、舆情波动……所有细小的偏差都会像灰尘一样落在系统里，最后形成轻微但持续的扰动。 可今晚没有。 不是变少了，而是像被什么东西仔细擦掉了。 顾衡把值班终端切到原始日志层，调出三区到七码头之间的夜间事件流。数据量没有异常，报送频率也正常，连设备在线率都稳定在均值上下一个百分点内。但正因为太标准了，反而显得不正常。 他点开一条凌晨两点零三分的急救调度记录。 老年男性，呼吸衰竭，系统分级二级，...</div></div></div></a><a class="pagination-related" href="/2026/03/07/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC2%E7%AB%A0/" title="静默阈值 第2章 移交"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/7.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-07</div><div class="info-item-2">静默阈值 第2章 移交</div></div><div class="info-2"><div class="info-item-1">顾衡没有立刻导出那条日志。 经验告诉他，任何真正有价值的异常，第一反应都不该是”提交”，而应该是确认自己有没有被看见。他先断开离线终端与主系统之间的心跳同步，再把工位摄像头的取景范围调低七度，让画面里只剩下键盘和半截桌面。这个动作并不违法，顶多算不够规范，而在临港数据治理中心，越是不起眼的违规，往往越能保护人。 屏幕上，那条未归档事件仍停在那里： 03:14 &#x2F; 港区第七码头 &#x2F; 身份核验失败 &#x2F; 对象状态：已移交 &#x2F; 人工记录缺失 顾衡盯着”已移交”三个字，心里生出一种冰冷的迟滞感。 系统里很少出现这种被动语态。 真正成熟的治理系统不喜欢模糊表达。它要求主体明确、动作清晰、责任可追溯。谁上传，谁审核，谁处置，谁签字，都会在日志链上留下完整映射。可这条记录像是故意避开了所有责任节点：没有移交给谁，没有由谁执行，也没有人工补录。它只留下一个结果，像给事故盖上的白布。 顾衡调出七码头的空间权限结构图，开始反查事件路径。 七码头属于港区智能通关试验带，表面上归交通协调署管理，实际上数据链路同时接入边检、城安、海事和市民身份总库。四套系统在这里交叠...</div></div></div></a><a class="pagination-related" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC3%E7%AB%A0/" title="静默阈值 第3章 寻找林时雨"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/8.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-08</div><div class="info-item-2">静默阈值 第3章 寻找林时雨</div></div><div class="info-2"><div class="info-item-1">清晨的阳光透过百叶窗切进来，在办公桌上划出细密的光痕。顾衡离开数据治理中心时，脑子里全是那通经过处理的女声和屏幕上那行冰冷的提示——该对象不存在。 林时雨不存在。 这个曾经在整个市民身份总库架构组里最耀眼的审计员，这个两年前公开质疑系统存在”静默覆盖机制”的女人，现在连档案都找不到了。 他在街边的早餐摊要了一碗豆浆和两根油条，却没有胃口。筷子在碗里拨了两下，思绪又飘回那个问题：林时雨到底知道了什么？ 按理说，一个离职两年的前审计员，不该被清除得这么彻底。除非她掌握的东西，足以让某些人睡不着觉。 顾衡决定从侧面入手。 林时雨在架构组有个关系不错的前同事，叫周穆，比她大四岁，现在是身份链维护组的资深工程师。周穆不像林时雨那样锋芒毕露，但他有一个优点——他从来不相信系统告诉他的第一件事。 上午九点，顾衡在数据治理中心东翼的茶水间堵到了周穆。 “你应该知道我来干什么。”顾衡直接把话说开。 周穆端着咖啡的手指顿了顿，面无表情地说：”你应该知道，我不能聊前同事的事。” “她不是’前同事’。”顾衡说，”她是被删除的同事。” 周穆看了他一眼，眼神里有一丝不易察觉的波动。他没有接话，而是转身往外走...</div></div></div></a><a class="pagination-related" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC6%E7%AB%A0/" title="静默阈值 第六章 暗夜行动"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/6.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">静默阈值 第六章 暗夜行动</div></div><div class="info-2"><div class="info-item-1">晚上十一点五十分，数据治理中心的灯光已经大部分熄灭。只有夜班值守室的灯还亮着，许临坐在监控屏幕前，表面上是值班，实际上在等待约定的时刻。 顾衡蹲在地下三层的安全通道里，紧盯着手机上的倒计时。 还有十分钟。 他的离线终端已经破解了许临的副账号权限——许临用自己的工号帮他开了一个后门，通过夜班专用的维护接口进入核心数据库。这个接口平时只用于系统维护，几乎不会被监控。 但这只是计划的第一步。 行动开始“准备好了吗？”顾衡对着耳机低声问。 耳机里传来林时雨的声音——她此刻在七号码头的地下节点，通过远程终端接入系统。 “准备好了。我这里已经解析了数据同步的时间窗口，你们有七分钟的窗口期。记住，证据要分成三份植入不同的数据表，这样即使一份被拦截，其他两份也能保存下来。” “明白。” 顾衡看了一眼时间。11:55。 他打开终端，连接许临提供的接口。屏幕上的代码飞速滚动，一道道认证请求被发送出去。 “身份验证通过。正在进入核心数据库……” 心脏在胸腔里剧烈跳动。顾衡深吸一口气，点开了第一个证据文件——那是林时雨留下的源代码片段，记录了”清道夫”模块的核心算法。 他将文件拖入上传区域。 进度条开始...</div></div></div></a><a class="pagination-related" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC4%E7%AB%A0/" title="静默阈值 第4章 地下节点"><img class="cover" src="/img/loading.gif" data-lazy-src="/img/default/9.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-08</div><div class="info-item-2">静默阈值 第4章 地下节点</div></div><div class="info-2"><div class="info-item-1">周六清晨，临港大学。 校园比顾衡想象中要安静。周末的关系，图书馆只开了侧门，操场上零星有几个晨跑的学生。林时雨的毕业照还挂在计算机系走廊的荣誉墙上——二十出头的姑娘，眼神清亮，带着一种还没被社会磨平的锐气。 顾衡在墙前站了很久。 他需要找到林时雨，但不是直接去问校方——那样太明目张胆，系统很可能已经在监控他。他需要找一个了解林时雨的人，一个不会出卖她的人。 一个名字浮现在脑海：苏迟到。 这个名字在林时雨的毕业论文致谢里出现过——“感谢苏迟到学长的耐心指导”。从时间推算，苏迟到应该比林时雨高两届，现在是临港大学的讲师。 顾衡通过校内系统查到了苏迟到的办公室地址。  办公室在信息学院楼的四楼，角落里的一间，光线有点暗。苏迟到正在给学生改论文，听见敲门声抬起头，推了推眼镜。 “你是？” “我叫顾衡，是临港数据治理中心的。”顾衡出示了一下工作证，”想向您了解一下林时雨的情况。” 苏迟到的动作顿了一下。 他合上笔记本电脑，起身关上门，然后才开口：”你已经查到我了。” “我不只是查到你。”顾衡说，”我还知道，两年前林时雨发现了系统的问题，然后被’处理’了。她的档案被覆盖，整个人像被从世界里删...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/loading.gif" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">xin</div><div class="author-info-description">收藏从未停止，学习从未开始!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xin-github-test"><i class="fab fa-github"></i><span>关注我的github</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/xin-github-test" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1246814044@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！！！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%84%E4%BC%B0%E6%9D%83%E9%99%90"><span class="toc-number">1.</span> <span class="toc-text">评估权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%8A%E7%89%8C"><span class="toc-number">2.</span> <span class="toc-text">摊牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E5%91%8A"><span class="toc-number">3.</span> <span class="toc-text">警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E5%AE%9A"><span class="toc-number">4.</span> <span class="toc-text">决定</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC6%E7%AB%A0/" title="静默阈值 第六章 暗夜行动"><img src="/img/loading.gif" data-lazy-src="/img/default/6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="静默阈值 第六章 暗夜行动"/></a><div class="content"><a class="title" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC6%E7%AB%A0/" title="静默阈值 第六章 暗夜行动">静默阈值 第六章 暗夜行动</a><time datetime="2026-03-13T05:12:49.472Z" title="发表于 2026-03-13 13:12:49">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/" title="静默阈值 第五章 核心入口"><img src="/img/loading.gif" data-lazy-src="/img/default/10.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="静默阈值 第五章 核心入口"/></a><div class="content"><a class="title" href="/2026/03/13/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC5%E7%AB%A0/" title="静默阈值 第五章 核心入口">静默阈值 第五章 核心入口</a><time datetime="2026-03-13T05:12:49.471Z" title="发表于 2026-03-13 13:12:49">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC4%E7%AB%A0/" title="静默阈值 第4章 地下节点"><img src="/img/loading.gif" data-lazy-src="/img/default/9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="静默阈值 第4章 地下节点"/></a><div class="content"><a class="title" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC4%E7%AB%A0/" title="静默阈值 第4章 地下节点">静默阈值 第4章 地下节点</a><time datetime="2026-03-08T07:45:17.025Z" title="发表于 2026-03-08 15:45:17">2026-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC3%E7%AB%A0/" title="静默阈值 第3章 寻找林时雨"><img src="/img/loading.gif" data-lazy-src="/img/default/8.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="静默阈值 第3章 寻找林时雨"/></a><div class="content"><a class="title" href="/2026/03/08/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC3%E7%AB%A0/" title="静默阈值 第3章 寻找林时雨">静默阈值 第3章 寻找林时雨</a><time datetime="2026-03-08T07:45:17.024Z" title="发表于 2026-03-08 15:45:17">2026-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/07/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC2%E7%AB%A0/" title="静默阈值 第2章 移交"><img src="/img/loading.gif" data-lazy-src="/img/default/7.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="静默阈值 第2章 移交"/></a><div class="content"><a class="title" href="/2026/03/07/%E9%9D%99%E9%BB%98%E9%98%88%E5%80%BC%E7%AC%AC2%E7%AB%A0/" title="静默阈值 第2章 移交">静默阈值 第2章 移交</a><time datetime="2026-03-07T14:29:59.287Z" title="发表于 2026-03-07 22:29:59">2026-03-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/default/10.png);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By xin</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div><div class="footer_custom_text">Hi, 欢迎来到我的 <a href="https://blog.wxin.icu/">blog</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/hexo-theme-butterfly@5.5.1/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-butterfly@5.5.1/source/js/main.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-butterfly@5.5.1/source/js/tw_cn.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="基,尼,太,美" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/hexo-theme-butterfly@5.5.1/source/js/search/local-search.min.js"></script></div></div></body></html>
